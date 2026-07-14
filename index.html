@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>シンバPJ 変容の物語</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EFE7D5;
+    --card: #E6DBC2;
+    --card-open: #F4EEDF;
+    --ink: #2B2620;
+    --ink-soft: #6E6459;
+    --indigo: #34465C;
+    --ember: #9C4A30;
+    --ember-soft: #F1DDCF;
+    --sage: #5F6F49;
+    --line: rgba(43,38,32,0.16);
+  }
+
+  *{ box-sizing: border-box; }
+
+  body{
+    margin:0;
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(255,255,255,0.35), transparent 45%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.04), transparent 40%);
+    color: var(--ink);
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap{
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 22px 90px;
+  }
+
+  header.page-head{
+    text-align: center;
+    margin-bottom: 44px;
+  }
+
+  .eyebrow{
+    font-size: 12.5px;
+    letter-spacing: 0.28em;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+  }
+
+  h1{
+    font-family: 'Shippori Mincho', serif;
+    font-weight: 800;
+    font-size: clamp(28px, 5vw, 40px);
+    margin: 0 0 16px;
+    letter-spacing: 0.02em;
+  }
+
+  .lede{
+    color: var(--ink-soft);
+    font-size: 15px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .toc-label{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 40px 0 18px;
+    color: var(--ink-soft);
+    font-size: 13px;
+    letter-spacing: 0.14em;
+  }
+  .toc-label::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background: var(--line);
+  }
+
+  ul.toc{
+    list-style: none;
+    margin: 0 0 60px;
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  li.story{
+    border-bottom: 1px solid var(--line);
+    background: var(--card);
+    transition: background 0.4s ease;
+  }
+
+  li.story.open{
+    background: var(--card-open);
+  }
+
+  .story-head{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: none;
+    border: none;
+    padding: 20px 6px;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    color: inherit;
+  }
+
+  .story-head:focus-visible{
+    outline: 2px solid var(--indigo);
+    outline-offset: 2px;
+  }
+
+  .marker{
+    flex: 0 0 auto;
+    width: 5px;
+    align-self: stretch;
+    border-radius: 3px;
+    background: var(--indigo);
+    opacity: 0.55;
+    transition: opacity 0.3s ease;
+  }
+  li.story.open .marker{ opacity: 1; background: var(--ember); }
+
+  .head-text{ flex: 1; min-width: 0; }
+
+  .tag{
+    display: block;
+    font-family: 'Shippori Mincho', serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.06em;
+    color: var(--indigo);
+    margin-bottom: 6px;
+  }
+
+  .title{
+    display: block;
+    font-family: 'Shippori Mincho', serif;
+    font-weight: 700;
+    font-size: 18.5px;
+    line-height: 1.5;
+  }
+
+  .teaser{
+    color: var(--ink-soft);
+    font-size: 13px;
+    margin-top: 6px;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .chevron{
+    flex: 0 0 auto;
+    width: 22px;
+    height: 22px;
+    color: var(--ink-soft);
+    transition: transform 0.35s ease;
+  }
+  li.story.open .chevron{ transform: rotate(180deg); color: var(--ember); }
+
+  .story-body{
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+  }
+
+  .story-inner{
+    padding: 4px 6px 34px 25px;
+  }
+
+  .section{
+    margin-bottom: 26px;
+  }
+  .section:last-child{ margin-bottom: 4px; }
+
+  .section-label{
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--indigo);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .section p{
+    margin: 0;
+    font-size: 15px;
+    color: var(--ink);
+  }
+
+  .section.turning{
+    position: relative;
+    padding: 20px 20px 20px 22px;
+    margin-left: -22px;
+    margin-right: -6px;
+    border-radius: 4px;
+    background:
+      radial-gradient(circle at 12% 0%, rgba(156,74,48,0.16), transparent 60%),
+      var(--ember-soft);
+    border-left: 3px solid var(--ember);
+  }
+  .section.turning .section-label{
+    color: var(--ember);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .section.turning .section-label svg{ width: 13px; height: 13px; }
+
+  .section.future .section-label{ color: var(--sage); }
+
+  .share-btn{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    padding: 9px 14px;
+    background: none;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    color: var(--ink-soft);
+    font-family: inherit;
+    font-size: 12.5px;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: border-color 0.25s ease, color 0.25s ease, background 0.25s ease;
+  }
+  .share-btn svg{ width: 14px; height: 14px; flex: 0 0 auto; }
+  .share-btn:hover{
+    border-color: var(--indigo);
+    color: var(--indigo);
+    background: rgba(52,70,92,0.06);
+  }
+  .share-btn.copied{
+    border-color: var(--sage);
+    color: var(--sage);
+    background: rgba(95,111,73,0.08);
+  }
+
+  footer.page-foot{
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 12.5px;
+    margin-top: 20px;
+    letter-spacing: 0.04em;
+  }
+
+  @media (max-width: 480px){
+    .wrap{ padding: 34px 16px 70px; }
+    .title{ font-size: 17px; }
+    .tag{ font-size: 14px; }
+    .story-inner{ padding-left: 20px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="page-head">
+    <div class="eyebrow">シンバPJ・実践記録</div>
+    <h1>聞こえますか私( )の声が。<br>あなたの笑顔がただ見たい・・・</h1>
+    <p class="lede">日々の中にある小さな転機を、7つの視点でたどった5つの実話。題名をタップすると、その物語が開きます。</p>
+  </header>
+
+  <div class="toc-label">目次</div>
+
+  <ul class="toc" id="toc"></ul>
+
+  <footer class="page-foot">シンバPJ — 夫婦・家族の実践コミュニティ</footer>
+</div>
+
+<script>
+const stories = [
+  {
+    tag: "コミュニティ運営",
+    title: "比較と焦りから、人を愛する喜びへ",
+    teaser: "コミュニティが思うように進まず、焦りや嫉妬を感じていた。",
+    before: "コミュニティが思うように進まず、他のコミュニティを見ると焦りや嫉妬を感じていた。",
+    then: "成果が出ていない事で周りからどんな風に思われてるのか、成果で自分の価値を証明しようとしていた。",
+    practice: "自分の考えを無くして、一緒に答えを導き出す事を意識して向き合った。",
+    turning: "ある方との対話の中で、一緒に答えを見つけることができ、「ワクワクします」と言ってもらえた。",
+    reflect: "目の前の一人を幸せにして、喜ばせて差し上げることが自分自身の喜びにもなっていた。",
+    future: "成果ではなく、一人ひとりの幸せと喜びに集中して向き合えるリーダーになる。"
+  },
+  {
+    tag: "義理の家族との関わり",
+    title: "相手を変えようとするより、爆笑させようと思えた日",
+    teaser: "義理のお母さんの話を聞くのが苦しく、その場を離れたくなっていた。",
+    before: "義理のお母さんが教会や真のお母様について批判的な話をすると、聞くのが苦しくなり、その場を離れたくなることがよくありました。",
+    then: "お母さんが話し始めると、心の中で「また始まった」と身構えてしまい、話の内容よりも「早く終わってほしい」という気持ちでいっぱいでした。",
+    practice: "「相手を変える」のではなく、「今日はお母さんを一回でも笑顔にしよう」という目的で接することに挑戦しました。",
+    turning: "車で二人きりになった時、お母さんに「カラオケでは何を歌うんですか？」と何気なく質問すると、お母さんは手を叩いて大笑いしてくださいました。その笑顔を見た瞬間、自分自身もとても嬉しくなり、その後は教会についてどんな話を聞いても以前ほど心が引っかからなくなりました。",
+    reflect: "相手の言葉を変えようとしていた時は苦しかったのですが、「相手を爆笑させたい」という目的に変わると、不思議と相手の言葉も受け止められるようになりました。神様もきっと、私たちを正そうとする前に、まず笑顔を見たいという心で愛してくださっているのではないかと感じました。",
+    future: "これからも、一日に一回は誰かを爆笑させることを意識しながら、神様の「人を喜ばせたい」という心情を少しでも実践できる自分になりたいです。"
+  },
+  {
+    tag: "夫婦の感謝",
+    title: "感謝を忘れた時、人は要求してしまう～当たり前リストが教えてくれた事～",
+    teaser: "妻に「もっと感謝してほしい」と、要求する気持ちが生まれていた。",
+    before: "妻から家事や育児について指摘されたり、自分の仕事の時間が思うように取れなかったりして、「自分の頑張りが当たり前と思われている」と感じ、妻にイライラしていました。",
+    then: "「もっと感謝してほしい」「もっと大切にしてほしい」という思いが強くなり、妻に対して要求する気持ちが生まれていました。",
+    practice: "「なぜこんなにイライラするのだろう」と自分を見つめ直し、自分にとって当たり前になっていることを紙に書き出してみました。",
+    turning: "家族と暮らせていること、妻の実家で不満なく生活できていること、収入がある事など、多くの「当たり前」が実は感謝すべき恵みだったことに気づきました。その瞬間、「自分こそ感謝を忘れていた」という気持ちがじわっと込み上げてきて、妻に対して申し訳なくなりました。ランチの時に素直な気持ちを妻に伝えると、ふっと胸のつかえが取れたような感覚がありました。",
+    reflect: "相手に「感謝してほしい」と思っていた時、自分自身が周りの人や先祖、神様からいただいている恵みを当たり前にしていたことに気づきました。感謝の心を取り戻すと、不満や要求は自然と小さくなり、相手を愛する気持ちが戻ってきました。「昨日より今日、今日より明日、感謝の心を持つ」という御言葉の深さを初めて実感しました。",
+    future: "これからも不満や要求が出てきた時は、「自分は何を当たり前と思っているだろう」と立ち止まり、感謝を思い出す習慣を続けていきたいです。そして、昨日より今日、今日より明日と、感謝の心を育みながら生活していきたいと思います。"
+  },
+  {
+    tag: "親との関わり",
+    title: "親を責めるより、一緒に背負うと決めた日",
+    teaser: "父の会社の経営が悪化し、家族としてどう支えるか悩んでいた。",
+    before: "父の会社の経営が悪化し、生活は厳しくなり、子どもたちにも金銭的な負担がかかるようになりました。父は自己破産をしたくないという思いが強く、家族としてどう支えていけばよいのか悩んでいました。",
+    then: "「なんでこんなに子どもへ迷惑をかけるんだろう」「絶対にこんな親にはなりたくない」そんな怒りや失望を父に抱いていました。父へ生活費を渡す時も、心から応援する気持ちにはなれませんでした。",
+    practice: "父を責め続けるのではなく、兄弟三人で何度も話し合い、「どうしたら父も納得し、家族みんなが一緒に前へ進めるだろう」という視点で考えるようになりました。そして両親も交えて家族で話し合い、自己破産という決断を一緒に支えることを選びました。その後は兄弟で協力しながら引っ越しや片付けを行い、弁護士費用も負担して、家族全員で新しい生活をスタートさせました。",
+    turning: "自己破産後、父は地域の楽団でトランペットを楽しむようになり、以前にはなかった穏やかな笑顔が増えました。孫たちともゆっくり過ごし、「まだ帰らないでほしい」と言ってくれるようになり、妻の誕生日にはシュークリームとプレゼントを用意してお祝いまでしてくれました。その姿を見た時、「あの決断は間違っていなかった」と心から思えました。",
+    reflect: "当時は「親が変わってくれない」と思い、責める気持ちばかりでした。でも、本当に必要だったのは責めることではなく、一緒に背負うと決めて、家族が一つになって、一緒に困難を乗り越えることだったのだと思います。親に挑戦する中で、私自身も「迷惑をかけた親」ではなく、「一緒に困難を越えた父」として見られるようになっていました。",
+    future: "相手を責める前に、「どうしたら一緒に前へ進めるだろう」という視点を大切にしながら、家族や周りの人が希望を持って歩めるよう支えていきたいです。"
+  },
+  {
+    tag: "夫婦の理解",
+    title: "PMSは、もっと愛してほしいというサインだった",
+    teaser: "妻がイライラすると、その感情に影響されて自分までイライラしていた。",
+    before: "妻がイライラすると、その感情に影響されて私までイライラしてしまうことがありました。特に子どもとの外出中は、お互いに余裕を失い、気持ちがすれ違うことがありました。",
+    then: "「どうしてこんなにイライラするんだろう」と、妻の態度ばかりに目が向いていました。妻がPMSだから仕方ない、と考えれば終わる話だとも思っていました。",
+    practice: "出来事を神様の視点で捉えようとし、「なぜ神様はPMSという時期をつくられたのだろう？」と考えてみました。すると、「女性がいつも以上に愛に敏感になる時期だからこそ、男性がより愛を注ぐように神様が与えてくださったサインなのかもしれない」と考えるようになりました。",
+    turning: "その気づきを妻に伝えると、妻はとても喜んでくれました。また、二人でPMSの時にどう支え合うかを話し合うことができ、イライラを責め合うのではなく、一緒に乗り越えていこうという雰囲気が生まれました。",
+    reflect: "妻のイライラを変えようとするよりも、「今、自分は十分に愛を届けられているだろうか」と自分を見つめ直すことの方が大切だと気づきました。どこまでも自分が愛の主体となることを神様は教えてくださっていたのだと感じています。",
+    future: "これからは、妻がPMSの時こそ「愛を必要としているサイン」と受け止め、いつも以上に思いやりや感謝を伝えられる夫でありたいです。そして、どんな出来事も「神様は私に何を教えようとしているのだろう」という視点で受け止められる自分を目指したいです。"
+  }
+];
+
+const toc = document.getElementById('toc');
+
+stories.forEach((s, i) => {
+  const li = document.createElement('li');
+  li.className = 'story';
+
+  const bodyId = 'body-' + i;
+
+  li.innerHTML = `
+    <button class="story-head" aria-expanded="false" aria-controls="${bodyId}">
+      <span class="marker"></span>
+      <span class="head-text">
+        <span class="tag">${s.tag}</span>
+        <span class="title">「${s.title}」</span>
+      </span>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <div class="story-body" id="${bodyId}">
+      <div class="story-inner">
+        <div class="section">
+          <div class="section-label">Before</div>
+          <p>${s.before}</p>
+        </div>
+        <div class="section">
+          <div class="section-label">あの頃の心の内</div>
+          <p>${s.then}</p>
+        </div>
+        <div class="section">
+          <div class="section-label">シンバPJでの実践</div>
+          <p>${s.practice}</p>
+        </div>
+        <div class="section turning">
+          <div class="section-label">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.6 5.2L19 9l-5.4 1.8L12 16l-1.6-5.2L5 9l5.4-1.8L12 2z"/></svg>
+            転機となった出来事
+          </div>
+          <p>${s.turning}</p>
+        </div>
+        <div class="section">
+          <div class="section-label">振り返って気づいたこと</div>
+          <p>${s.reflect}</p>
+        </div>
+        <div class="section future">
+          <div class="section-label">これから挑戦したいこと</div>
+          <p>${s.future}</p>
+        </div>
+        <button class="share-btn" type="button" data-index="${i}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 12v6a2 2 0 002 2h12a2 2 0 002-2v-6M16 6l-4-4-4 4M12 2v14" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="share-label">この物語のリンクをコピー</span>
+        </button>
+      </div>
+    </div>
+  `;
+
+  li.id = 'story-' + i;
+  toc.appendChild(li);
+
+  const head = li.querySelector('.story-head');
+  const body = li.querySelector('.story-body');
+
+  head.addEventListener('click', () => {
+    const isOpen = li.classList.contains('open');
+
+    document.querySelectorAll('li.story.open').forEach(other => {
+      if (other !== li){
+        other.classList.remove('open');
+        other.querySelector('.story-head').setAttribute('aria-expanded', 'false');
+        other.querySelector('.story-body').style.maxHeight = null;
+      }
+    });
+
+    if (isOpen){
+      li.classList.remove('open');
+      head.setAttribute('aria-expanded', 'false');
+      body.style.maxHeight = null;
+      history.replaceState(null, '', location.pathname + location.search);
+    } else {
+      li.classList.add('open');
+      head.setAttribute('aria-expanded', 'true');
+      body.style.maxHeight = body.scrollHeight + 'px';
+      history.replaceState(null, '', '#' + li.id);
+      setTimeout(() => { li.scrollIntoView({behavior: 'smooth', block: 'start'}); }, 120);
+    }
+  });
+
+  const shareBtn = li.querySelector('.share-btn');
+  shareBtn.addEventListener('click', async () => {
+    const url = location.origin + location.pathname + location.search + '#' + li.id;
+    const label = shareBtn.querySelector('.share-label');
+    const original = label.textContent;
+    try {
+      await navigator.clipboard.writeText(url);
+    } catch (e) {
+      const temp = document.createElement('textarea');
+      temp.value = url;
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand('copy');
+      document.body.removeChild(temp);
+    }
+    shareBtn.classList.add('copied');
+    label.textContent = 'コピーしました！';
+    setTimeout(() => {
+      shareBtn.classList.remove('copied');
+      label.textContent = original;
+    }, 1800);
+  });
+});
+
+// Shrink any title that would otherwise wrap, so every title stays on one line
+function fitTitle(titleEl){
+  const container = titleEl.parentElement;
+  titleEl.style.whiteSpace = 'nowrap';
+  let size = parseFloat(getComputedStyle(titleEl).fontSize);
+  const baseSize = size;
+  const minSize = baseSize * 0.72;
+  while (titleEl.scrollWidth > container.clientWidth && size > minSize){
+    size -= 0.5;
+    titleEl.style.fontSize = size + 'px';
+  }
+  if (titleEl.scrollWidth > container.clientWidth){
+    titleEl.style.whiteSpace = 'normal'; // safety net if it still can't fit even at min size
+  }
+}
+
+function fitAllTitles(){
+  document.querySelectorAll('.tag, .title').forEach(fitTitle);
+}
+
+if (document.fonts && document.fonts.ready){
+  document.fonts.ready.then(fitAllTitles);
+} else {
+  fitAllTitles();
+}
+window.addEventListener('resize', () => {
+  clearTimeout(window._titleResizeT);
+  window._titleResizeT = setTimeout(fitAllTitles, 150);
+});
+
+// Auto-open a story if the page is loaded with a matching #story-N hash
+if (location.hash){
+  const target = document.querySelector(location.hash);
+  if (target && target.classList.contains('story')){
+    target.querySelector('.story-head').click();
+  }
+}
+</script>
+</body>
+</html>
