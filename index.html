@@ -20,16 +20,21 @@
     --ember-soft: #F1DDCF;
     --sage: #5F6F49;
     --line: rgba(43,38,32,0.16);
+    --gold-soft: #e9d19a;
+    --cream-soft: rgba(243,237,224,0.86);
   }
 
   *{ box-sizing: border-box; }
 
   body{
     margin:0;
-    background: var(--paper);
+    background-color: #0c0c10;
     background-image:
-      radial-gradient(circle at 15% 8%, rgba(255,255,255,0.35), transparent 45%),
-      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.04), transparent 40%);
+      linear-gradient(180deg, rgba(8,8,12,0.30) 0%, rgba(8,8,12,0.10) 30%, rgba(8,8,12,0.55) 100%),
+      url('story-book-bg.png');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
     color: var(--ink);
     font-family: 'Zen Kaku Gothic New', sans-serif;
     line-height: 1.9;
@@ -50,8 +55,9 @@
   .eyebrow{
     font-size: 12.5px;
     letter-spacing: 0.28em;
-    color: var(--ink-soft);
+    color: var(--cream-soft);
     margin-bottom: 14px;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.6);
   }
 
   h1{
@@ -60,13 +66,16 @@
     font-size: clamp(28px, 5vw, 40px);
     margin: 0 0 16px;
     letter-spacing: 0.02em;
+    color: var(--gold-soft);
+    text-shadow: 0 2px 18px rgba(0,0,0,0.7);
   }
 
   .lede{
-    color: var(--ink-soft);
+    color: var(--cream-soft);
     font-size: 15px;
     max-width: 480px;
     margin: 0 auto;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.6);
   }
 
   .toc-label{
@@ -74,22 +83,23 @@
     align-items: center;
     gap: 14px;
     margin: 40px 0 18px;
-    color: var(--ink-soft);
+    color: var(--cream-soft);
     font-size: 13px;
     letter-spacing: 0.14em;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.6);
   }
   .toc-label::after{
     content:"";
     flex:1;
     height:1px;
-    background: var(--line);
+    background: rgba(233,209,154,0.3);
   }
 
   ul.toc{
     list-style: none;
     margin: 0 0 60px;
     padding: 0;
-    border-top: 1px solid var(--line);
+    border-top: 1px solid rgba(233,209,154,0.3);
   }
 
   li.story{
@@ -251,10 +261,11 @@
 
   footer.page-foot{
     text-align: center;
-    color: var(--ink-soft);
+    color: var(--cream-soft);
     font-size: 12.5px;
     margin-top: 20px;
     letter-spacing: 0.04em;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.6);
   }
 
   @media (max-width: 480px){
@@ -293,8 +304,8 @@ const stories = [
     teaser: "コミュニティが思うように進まず、焦りや嫉妬を感じていた。",
     before: "コミュニティが思うように進まず、他のコミュニティを見ると焦りや嫉妬を感じていた。",
     then: "成果が出ていない事で周りからどんな風に思われてるのか、成果で自分の価値を証明しようとしていた。",
-    practice: "自分の考えを無くして、一緒に答えを導き出す事を意識して向き合った。",
-    turning: "ある方との対話の中で、一緒に答えを見つけることができ、「ワクワクします」と言ってもらえた。",
+    practice: "いま関わってくれている目の前の方々を喜ばせ幸せを感じてもらえる事に集中して、一緒に答えを導き出す事を意識して向き合った。",
+    turning: "ある方との対話の中で、一緒に答えを見つけることができ、「挑戦する事がワクワクします」と言ってもらった。翌日行動して良い結果を作れたことに対しての感謝のLineが届いた時にとてつもなく嬉しかった。この感覚を大切にしたいと思った。",
     reflect: "目の前の一人を幸せにして、喜ばせて差し上げることが自分自身の喜びにもなっていた。",
     future: "成果ではなく、一人ひとりの幸せと喜びに集中して向き合えるリーダーになる。"
   },
@@ -305,7 +316,7 @@ const stories = [
     before: "義理のお母さんが教会や真のお母様について批判的な話をすると、聞くのが苦しくなり、その場を離れたくなることがよくありました。",
     then: "お母さんが話し始めると、心の中で「また始まった」と身構えてしまい、話の内容よりも「早く終わってほしい」という気持ちでいっぱいでした。",
     practice: "「相手を変える」のではなく、「今日はお母さんを一回でも笑顔にしよう」という目的で接することに挑戦しました。",
-    turning: "車で二人きりになった時、お母さんに「カラオケでは何を歌うんですか？」と何気なく質問すると、お母さんは手を叩いて大笑いしてくださいました。その笑顔を見た瞬間、自分自身もとても嬉しくなり、その後は教会についてどんな話を聞いても以前ほど心が引っかからなくなりました。",
+    turning: "車で二人きりになった時、お母さんに「カラオケでは何を歌うんですか？」と何気なく質問すると、お母さんは意表を突かれた様子で一瞬時間が止まり、手を叩いて大笑いしてくださいました。その笑顔を見た瞬間、とても愛おしく感じ、自分自身もとても嬉しくなり、その後は教会についてどんな話を聞いても以前ほど心が引っかからなくなりました。",
     reflect: "相手の言葉を変えようとしていた時は苦しかったのですが、「相手を爆笑させたい」という目的に変わると、不思議と相手の言葉も受け止められるようになりました。神様もきっと、私たちを正そうとする前に、まず笑顔を見たいという心で愛してくださっているのではないかと感じました。",
     future: "これからも、一日に一回は誰かを爆笑させることを意識しながら、神様の「人を喜ばせたい」という心情を少しでも実践できる自分になりたいです。"
   },
