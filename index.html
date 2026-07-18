@@ -144,6 +144,17 @@
 
   .head-text{ flex: 1; min-width: 0; }
 
+  .story-no{
+    display: block;
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    opacity: 0.65;
+    margin-bottom: 4px;
+  }
+
   .tag{
     display: block;
     font-family: 'Shippori Mincho', serif;
@@ -270,6 +281,7 @@
 
   @media (max-width: 480px){
     .wrap{ padding: 34px 16px 70px; }
+    h1{ font-size: 23px; }
     .title{ font-size: 17px; }
     .tag{ font-size: 14px; }
     .story-inner{ padding-left: 20px; }
@@ -367,6 +379,7 @@ stories.forEach((s, i) => {
     <button class="story-head" aria-expanded="false" aria-controls="${bodyId}">
       <span class="marker"></span>
       <span class="head-text">
+        <span class="story-no">No. ${String(i + 1).padStart(4, '0')}</span>
         <span class="tag">${s.tag}</span>
         <span class="title">「${s.title}」</span>
       </span>
@@ -466,36 +479,6 @@ stories.forEach((s, i) => {
       label.textContent = original;
     }, 1800);
   });
-});
-
-// Shrink any title that would otherwise wrap, so every title stays on one line
-function fitTitle(titleEl){
-  const container = titleEl.parentElement;
-  titleEl.style.whiteSpace = 'nowrap';
-  let size = parseFloat(getComputedStyle(titleEl).fontSize);
-  const baseSize = size;
-  const minSize = baseSize * 0.72;
-  while (titleEl.scrollWidth > container.clientWidth && size > minSize){
-    size -= 0.5;
-    titleEl.style.fontSize = size + 'px';
-  }
-  if (titleEl.scrollWidth > container.clientWidth){
-    titleEl.style.whiteSpace = 'normal'; // safety net if it still can't fit even at min size
-  }
-}
-
-function fitAllTitles(){
-  document.querySelectorAll('.tag, .title').forEach(fitTitle);
-}
-
-if (document.fonts && document.fonts.ready){
-  document.fonts.ready.then(fitAllTitles);
-} else {
-  fitAllTitles();
-}
-window.addEventListener('resize', () => {
-  clearTimeout(window._titleResizeT);
-  window._titleResizeT = setTimeout(fitAllTitles, 150);
 });
 
 // Auto-open a story if the page is loaded with a matching #story-N hash
