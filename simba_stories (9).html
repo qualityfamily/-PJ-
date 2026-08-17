@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>シンバPJ 変容の物語</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EFE7D5;
+    --card: #E6DBC2;
+    --card-open: #F4EEDF;
+    --ink: #2B2620;
+    --ink-soft: #6E6459;
+    --indigo: #34465C;
+    --ember: #9C4A30;
+    --ember-soft: #F1DDCF;
+    --sage: #5F6F49;
+    --line: rgba(43,38,32,0.16);
+    --gold-soft: #e9d19a;
+    --cream-soft: rgba(243,237,224,0.86);
+  }
+
+  *{ box-sizing: border-box; }
+
+  body{
+    margin:0;
+    background-color: #0c0c10;
+    background-image:
+      linear-gradient(180deg, rgba(8,8,12,0.30) 0%, rgba(8,8,12,0.10) 30%, rgba(8,8,12,0.55) 100%),
+      url('story-book-bg.png');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    color: var(--ink);
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap{
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 22px 90px;
+  }
+
+  header.page-head{
+    text-align: center;
+    margin-bottom: 44px;
+  }
+
+  .eyebrow{
+    font-size: 12.5px;
+    letter-spacing: 0.28em;
+    color: var(--cream-soft);
+    margin-bottom: 14px;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+  }
+
+  h1{
+    font-family: 'Shippori Mincho', serif;
+    font-weight: 800;
+    font-size: clamp(28px, 5vw, 40px);
+    margin: 0 0 16px;
+    letter-spacing: 0.02em;
+    color: var(--gold-soft);
+    text-shadow: 0 2px 18px rgba(0,0,0,0.7);
+  }
+
+  .lede{
+    color: var(--cream-soft);
+    font-size: 15px;
+    max-width: 480px;
+    margin: 0 auto;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+  }
+
+  .toc-label{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 40px 0 18px;
+    color: var(--cream-soft);
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+  }
+  .toc-label::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background: rgba(233,209,154,0.3);
+  }
+
+  ul.toc{
+    list-style: none;
+    margin: 0 0 60px;
+    padding: 0;
+    border-top: 1px solid rgba(233,209,154,0.3);
+  }
+
+  li.story{
+    border-bottom: 1px solid var(--line);
+    background: var(--card);
+    transition: background 0.4s ease;
+  }
+
+  li.story.open{
+    background: var(--card-open);
+  }
+
+  .story-head{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: none;
+    border: none;
+    padding: 20px 6px;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    color: inherit;
+  }
+
+  .story-head:focus-visible{
+    outline: 2px solid var(--indigo);
+    outline-offset: 2px;
+  }
+
+  .marker{
+    flex: 0 0 auto;
+    width: 5px;
+    align-self: stretch;
+    border-radius: 3px;
+    background: var(--indigo);
+    opacity: 0.55;
+    transition: opacity 0.3s ease;
+  }
+  li.story.open .marker{ opacity: 1; background: var(--ember); }
+
+  .head-text{ flex: 1; min-width: 0; }
+
+  .story-no{
+    display: block;
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    opacity: 0.65;
+    margin-bottom: 4px;
+  }
+
+  .tag{
+    display: block;
+    font-family: 'Shippori Mincho', serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.06em;
+    color: var(--indigo);
+    margin-bottom: 6px;
+  }
+
+  .tag .profile{
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    margin-left: 6px;
+  }
+
+  .title{
+    display: block;
+    font-family: 'Shippori Mincho', serif;
+    font-weight: 700;
+    font-size: 18.5px;
+    line-height: 1.5;
+  }
+
+  .teaser{
+    color: var(--ink-soft);
+    font-size: 13px;
+    margin-top: 6px;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .chevron{
+    flex: 0 0 auto;
+    width: 22px;
+    height: 22px;
+    color: var(--ink-soft);
+    transition: transform 0.35s ease;
+  }
+  li.story.open .chevron{ transform: rotate(180deg); color: var(--ember); }
+
+  .story-body{
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+  }
+
+  .story-inner{
+    padding: 4px 6px 34px 25px;
+  }
+
+  .section{
+    margin-bottom: 26px;
+  }
+  .section:last-child{ margin-bottom: 4px; }
+
+  .section-label{
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--indigo);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .section p{
+    margin: 0;
+    font-size: 15px;
+    color: var(--ink);
+  }
+
+  .section.turning{
+    position: relative;
+    padding: 20px 20px 20px 22px;
+    margin-left: -22px;
+    margin-right: -6px;
+    border-radius: 4px;
+    background:
+      radial-gradient(circle at 12% 0%, rgba(156,74,48,0.16), transparent 60%),
+      var(--ember-soft);
+    border-left: 3px solid var(--ember);
+  }
+  .section.turning .section-label{
+    color: var(--ember);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .section.turning .section-label svg{ width: 13px; height: 13px; }
+
+  .section.future .section-label{ color: var(--sage); }
+
+  .share-btn{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    padding: 9px 14px;
+    background: none;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    color: var(--ink-soft);
+    font-family: inherit;
+    font-size: 12.5px;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: border-color 0.25s ease, color 0.25s ease, background 0.25s ease;
+  }
+  .share-btn svg{ width: 14px; height: 14px; flex: 0 0 auto; }
+  .share-btn:hover{
+    border-color: var(--indigo);
+    color: var(--indigo);
+    background: rgba(52,70,92,0.06);
+  }
+  .share-btn.copied{
+    border-color: var(--sage);
+    color: var(--sage);
+    background: rgba(95,111,73,0.08);
+  }
+
+  footer.page-foot{
+    text-align: center;
+    color: var(--cream-soft);
+    font-size: 12.5px;
+    margin-top: 20px;
+    letter-spacing: 0.04em;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+  }
+
+  @media (max-width: 480px){
+    .wrap{ padding: 34px 16px 70px; }
+    h1{ font-size: 23px; }
+    .title{ font-size: 17px; }
+    .tag{ font-size: 14px; }
+    .story-inner{ padding-left: 20px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="page-head">
+    <div class="eyebrow">シンバPJ・実践記録</div>
+    <h1>聞こえますか私( )の声が。<br>あなたの笑顔がただ見たい・・・</h1>
+    <p class="lede">日々の中にある小さな転機を、7つの視点でたどった実話。<br>1000の実話で未来を変える。</p>
+  </header>
+
+  <div class="toc-label">目次</div>
+
+  <ul class="toc" id="toc"></ul>
+
+  <footer class="page-foot">シンバPJ — 夫婦・家族の実践コミュニティ</footer>
+</div>
+
+<script>
+const stories = [
+  {
+    tag: "コミュニティ運営",
+    profile: "30代男性",
+    title: "比較と焦りから、人を愛する喜びへ",
+    teaser: "コミュニティが思うように進まず、焦りや嫉妬を感じていた。",
+    before: "コミュニティが思うように進まず、他のコミュニティを見ると焦りや嫉妬を感じていた。",
+    then: "成果が出ていない事で周りからどんな風に思われてるのか、成果で自分の価値を証明しようとしていた。",
+    practice: "いま関わってくれている目の前の方々を喜ばせ幸せを感じてもらえる事に集中して、一緒に答えを導き出す事を意識して向き合った。",
+    turning: "ある方との対話の中で、一緒に答えを見つけることができ、「挑戦する事がワクワクします」と言ってもらった。翌日行動して良い結果を作れたことに対しての感謝のLineが届いた時にとてつもなく嬉しかった。この感覚を大切にしたいと思った。",
+    reflect: "目の前の一人を幸せにして、喜ばせて差し上げることが自分自身の喜びにもなっていた。",
+    future: "成果ではなく、一人ひとりの幸せと喜びに集中して向き合えるリーダーになる。"
+  },
+  {
+    tag: "義理の家族との関わり",
+    profile: "30代男性",
+    title: "相手を変えようとするより、爆笑させようと思えた日",
+    teaser: "義理のお母さんの話を聞くのが苦しく、その場を離れたくなっていた。",
+    before: "義理のお母さんが教会や真のお母様について批判的な話をすると、聞くのが苦しくなり、その場を離れたくなることがよくありました。",
+    then: "お母さんが話し始めると、心の中で「また始まった」と身構えてしまい、話の内容よりも「早く終わってほしい」という気持ちでいっぱいでした。",
+    practice: "「相手を変える」のではなく、「今日はお母さんを一回でも笑顔にしよう」という目的で接することに挑戦しました。",
+    turning: "車で二人きりになった時、お母さんに「カラオケでは何を歌うんですか？」と何気なく質問すると、お母さんは意表を突かれた様子で一瞬時間が止まり、手を叩いて大笑いしてくださいました。その笑顔を見た瞬間、とても愛おしく感じ、自分自身もとても嬉しくなり、その後は教会についてどんな話を聞いても以前ほど心が引っかからなくなりました。",
+    reflect: "相手の言葉を変えようとしていた時は苦しかったのですが、「相手を爆笑させたい」という目的に変わると、不思議と相手の言葉も受け止められるようになりました。神様もきっと、私たちを正そうとする前に、まず笑顔を見たいという心で愛してくださっているのではないかと感じました。",
+    future: "これからも、一日に一回は誰かを爆笑させることを意識しながら、神様の「人を喜ばせたい」という心情を少しでも実践できる自分になりたいです。"
+  },
+  {
+    tag: "夫婦の感謝",
+    profile: "30代男性",
+    title: "感謝を忘れた時、人は要求してしまう～当たり前リストが教えてくれた事～",
+    teaser: "妻に「もっと感謝してほしい」と、要求する気持ちが生まれていた。",
+    before: "妻から家事や育児について指摘されたり、自分の仕事の時間が思うように取れなかったりして、「自分の頑張りが当たり前と思われている」と感じ、妻にイライラしていました。",
+    then: "「もっと感謝してほしい」「もっと大切にしてほしい」という思いが強くなり、妻に対して要求する気持ちが生まれていました。",
+    practice: "「なぜこんなにイライラするのだろう」と自分を見つめ直し、自分にとって当たり前になっていることを紙に書き出してみました。",
+    turning: "家族と暮らせていること、妻の実家で不満なく生活できていること、収入がある事など、多くの「当たり前」が実は感謝すべき恵みだったことに気づきました。その瞬間、「自分こそ感謝を忘れていた」という気持ちがじわっと込み上げてきて、妻に対して申し訳なくなりました。ランチの時に素直な気持ちを妻に伝えると、ふっと胸のつかえが取れたような感覚がありました。",
+    reflect: "相手に「感謝してほしい」と思っていた時、自分自身が周りの人や先祖、神様からいただいている恵みを当たり前にしていたことに気づきました。感謝の心を取り戻すと、不満や要求は自然と小さくなり、相手を愛する気持ちが戻ってきました。「昨日より今日、今日より明日、感謝の心を持つ」という御言葉の深さを初めて実感しました。",
+    future: "これからも不満や要求が出てきた時は、「自分は何を当たり前と思っているだろう」と立ち止まり、感謝を思い出す習慣を続けていきたいです。そして、昨日より今日、今日より明日と、感謝の心を育みながら生活していきたいと思います。"
+  },
+  {
+    tag: "親との関わり",
+    profile: "30代男性",
+    title: "親を責めるより、一緒に背負うと決めた日",
+    teaser: "父の会社の経営が悪化し、家族としてどう支えるか悩んでいた。",
+    before: "父の会社の経営が悪化し、生活は厳しくなり、子どもたちにも金銭的な負担がかかるようになりました。父は自己破産をしたくないという思いが強く、家族としてどう支えていけばよいのか悩んでいました。",
+    then: "「なんでこんなに子どもへ迷惑をかけるんだろう」「絶対にこんな親にはなりたくない」そんな怒りや失望を父に抱いていました。父へ生活費を渡す時も、心から応援する気持ちにはなれませんでした。",
+    practice: "父を責め続けるのではなく、兄弟三人で何度も話し合い、「どうしたら父も納得し、家族みんなが一緒に前へ進めるだろう」という視点で考えるようになりました。そして両親も交えて家族で話し合い、自己破産という決断を一緒に支えることを選びました。その後は兄弟で協力しながら引っ越しや片付けを行い、弁護士費用も負担して、家族全員で新しい生活をスタートさせました。",
+    turning: "自己破産後、父は地域の楽団でトランペットを楽しむようになり、以前にはなかった穏やかな笑顔が増えました。孫たちともゆっくり過ごし、「まだ帰らないでほしい」と言ってくれるようになり、妻の誕生日にはシュークリームとプレゼントを用意してお祝いまでしてくれました。その姿を見た時、「あの決断は間違っていなかった」と心から思えました。",
+    reflect: "当時は「親が変わってくれない」と思い、責める気持ちばかりでした。でも、本当に必要だったのは責めることではなく、一緒に背負うと決めて、家族が一つになって、一緒に困難を乗り越えることだったのだと思います。親に挑戦する中で、私自身も「迷惑をかけた親」ではなく、「一緒に困難を越えた父」として見られるようになっていました。",
+    future: "相手を責める前に、「どうしたら一緒に前へ進めるだろう」という視点を大切にしながら、家族や周りの人が希望を持って歩めるよう支えていきたいです。"
+  },
+  {
+    tag: "夫婦の理解",
+    profile: "30代男性",
+    title: "PMSは、もっと愛してほしいというサインだった",
+    teaser: "妻がイライラすると、その感情に影響されて自分までイライラしていた。",
+    before: "妻がイライラすると、その感情に影響されて私までイライラしてしまうことがありました。特に子どもとの外出中は、お互いに余裕を失い、気持ちがすれ違うことがありました。",
+    then: "「どうしてこんなにイライラするんだろう」と、妻の態度ばかりに目が向いていました。妻がPMSだから仕方ない、と考えれば終わる話だとも思っていました。",
+    practice: "出来事を神様の視点で捉えようとし、「なぜ神様はPMSという時期をつくられたのだろう？」と考えてみました。すると、「女性がいつも以上に愛に敏感になる時期だからこそ、男性がより愛を注ぐように神様が与えてくださったサインなのかもしれない」と考えるようになりました。",
+    turning: "その気づきを妻に伝えると、妻はとても喜んでくれました。また、二人でPMSの時にどう支え合うかを話し合うことができ、イライラを責め合うのではなく、一緒に乗り越えていこうという雰囲気が生まれました。",
+    reflect: "妻のイライラを変えようとするよりも、「今、自分は十分に愛を届けられているだろうか」と自分を見つめ直すことの方が大切だと気づきました。どこまでも自分が愛の主体となることを神様は教えてくださっていたのだと感じています。",
+    future: "これからは、妻がPMSの時こそ「愛を必要としているサイン」と受け止め、いつも以上に思いやりや感謝を伝えられる夫でありたいです。そして、どんな出来事も「神様は私に何を教えようとしているのだろう」という視点で受け止められる自分を目指したいです。"
+  },
+  {
+    tag: "子供との関わり",
+    profile: "30代男性",
+    title: "言葉ではなく、心に共鳴するということ",
+    before: "5歳の娘が楽しみに始めたスイミング。でも、ある日から「行きたくない」と言うようになりました。「友達ができない」「ママが赤ちゃんのお世話で寂しかった」「一人になるのが嫌」娘はいろいろな理由を話してくれましたが、私は心のどこかで「本当の理由は別にあるんじゃないか」と思い、焦りやイライラを感じていました。",
+    then: "娘の気持ちを理解しようとしているつもりでした。でも本当に見ていたのは、娘ではなく自分の考えでした。「こうしてあげたらいい」「本当はこう思っているんじゃないか」——自分の主観を通して娘を見ていたため、本当の心には届いていなかったのだと思います。",
+    practice: "翌朝、娘に「昨日はイライラして話してごめんね」と素直に謝りました。すると娘は安心したように「今日、頑張って行ってみる」と言ってくれました。「まず自分が変わる」——シンバPJで学んでいることを、娘との関係でも実践できた瞬間でした。",
+    turning: "当日、娘はやはり泣きながら「行きたくない」と言いました。スイミングへ着くと、コーチが娘の話を聞いて、こう言ってくれました。「友達ができないって、本当に嫌だよね。私もそうだったから、すごく分かるよ。」その瞬間、娘の表情がふっと和らぎ、その日は無事に参加することができました。後日、ある方から「自分の主観が入ると、共感しているようでも本質がずれてしまう」という話を聞いた時、まさに今回のことだと気づきました。",
+    reflect: "私は娘の言葉には共感していました。でも本当に共感すべきだったのは、その奥にある「寂しかった」「不安だった」という心でした。コーチは言葉に反応したのではなく、娘の心そのものに寄り添っていた。だから娘は動けた。人は正しい答えよりも、「分かってもらえた」という安心がある時に、前へ進める。そのことを娘から教えてもらいました。",
+    future: "相手の言葉だけでなく、「この人は今、本当は何を感じているんだろう」と動機や心の奥に耳を傾けられるように挑戦していきます。"
+  },
+  {
+    tag: "自分との関わり",
+    profile: "30代女性",
+    title: "できない自分の、一番の味方になる",
+    before: "私は、何かうまくできなかったり、自分の未熟さに気づいたりすると、すぐに落ち込んでしまうタイプでした。仕事や家事で思うようにできないことがあるたびに、「私はまだまだだ…」という気持ちが押し寄せ、ひどい時には涙が出てしまうこともありました。",
+    then: "振り返ると、どこかで「ちゃんとできる自分でいなければいけない」という思い込みを抱えていたのだと思います。だから、できない自分を受け入れられず、認めることもできませんでした。誰よりも、自分自身に厳しかったのです。",
+    practice: "ある時、シンバPJの中で『まずは、できない自分を受け止めてあげることからだね。』その言葉を聞いた時、何かがストンと落ちた感覚がありました。責めることに慣れすぎていて、自分を受け止めるという発想が、それまでなかったのだと気づきました。それからは、できない自分を責めるのではなく、「今の自分なりによく頑張ってるよ。」と、自分自身に声をかけることを意識するようになりました。",
+    turning: "そうやって少しずつ自分に寄り添うことを続けていると、不思議と以前のように深く落ち込むことが減っていきました。ある日、また失敗してしまった時、以前なら深く落ち込んでいたはずなのに、『また頑張ればいい』と自然に思えている自分に気がつきました。自分の一番の味方になれている感覚が生まれてきました。",
+    reflect: "これまでの私は、「できない自分」を変えようとばかりしていました。でも、本当に必要だったのは、変えることではなく、そのままの自分を受け止めることでした。自分を責め続けるよりも、自分の味方になれた時、人は少しずつ前へ進めるのだと実感しています。",
+    future: "これからも、できない自分を否定するのではなく、まずは受け止め、励ましてあげられる自分でいたいと思います。そして、自分だけでなく、周りの人が壁にぶつかっている時も、その人のこれまでの頑張りに目を向けられる人になっていきたいです。"
+  },
+  {
+    tag: "夫婦の本音",
+    profile: "30代女性",
+    title: "本音を伝えたら、夫婦の距離が縮まった。",
+    before: "3人の娘を育てる毎日は、目まぐるしく過ぎていきます。今回のシンバPJでは、「夫と本音で話し合える関係を築きたい」と思い、夫を対象にチャレンジすることにしました。夫に「どんな妻でいてほしい？」と聞くと、返ってくる答えはいつも一つ。「怒らないでいてくれたら、それでいい。」でも、その「怒らない」が私にとって一番難しいことでした。",
+    then: "イライラするたびに、「また怒ってしまった…」と落ち込んでいました。特に、子どもから「一緒に遊ぼう」と言われる時間や、夕方の慌ただしい時間は心に余裕がなく、「早く終わらせたい」「早く一人の時間がほしい」と考えてばかりでした。でも、一日の終わりに子どもの寝顔を見るたび、「もっと遊んであげればよかった。」そんな後悔を繰り返していました。",
+    practice: "まずは、イライラした時に『ｷﾀ━!!』と心の中でつぶやき、自分の感情に気づくことから始めました。また、「今、この子と向き合う時間を大切にしよう」と意識を変え、公園では子どもたちと本気で鬼ごっこをしてみました。すると、自分でも驚くほど楽しく、子どもたちがより愛おしく感じられました。その喜びを、夫にもLINEで伝えたり、自分の感じたことを少しずつ話すようにしました。",
+    turning: "最初は「忙しい夫にこんな話をしても迷惑かな」と思っていました。でも勇気を出して伝えてみると、夫は思っていた以上に喜んで話を聞いてくれました。その時、「本音で話せる関係を望んでいたのに、本音を話していなかったのは私だった。」ということに気づいたのです。夫と少しずつ心を通わせられるようになると、不思議と子どもへの接し方も変わっていきました。",
+    reflect: "私は、「夫ともっと分かり合いたい」と思っていました。でも、本当に必要だったのは、相手が変わることを待つのではなく、自分から心を開くことでした。そして、夫に心を開いた時、子どもへの目も変わっていた。家族って、そういうふうにつながっているんだと気づきました。",
+    future: "これからも、忙しさに流されるのではなく、「今、この瞬間」を大切にしながら子どもたちと向き合っていきたいです。そして、夫に対しても、「伝わっているはず」と思い込まず、自分の感じたことや感謝を素直に伝え続けたいと思います。夫婦が心を通わせることで、家族みんなが安心して笑い合える家庭を築いていきたいです。"
+  },
+  {
+    tag: "兄弟姉妹との関わり",
+    profile: "20代男性",
+    title: "途中で止まってしまう自分に、やっと気がついた。",
+    before: "これまで私は、シンバPJで兄弟との関係をテーマに歩んできました。兄弟たちに教会のことを知ってほしくて、キャンプや遊びに誘いながら、少しずつ関係を築いてきました。その結果、兄弟全員が私の祝福式に参加してくれた時は、本当に嬉しく、『ここまで歩んできて、本当に良かった。』と感じていました。",
+    then: "でも、その後ふと気づいたのです。「あれ…最近、兄弟に心を向けられていない。」本当は「伝道したい」という思いで歩んできたはずなのに、祝福式に参加してくれたことを一つのゴールにしてしまい、その後は心情的な関わりが減っていました。さらに振り返ると、この「途中までは頑張るけれど、最後まで続かない」というパターンは、仕事や勉強など、人生のいろいろな場面でも繰り返していたことに気づきました。",
+    practice: "今回のシンバPJでは、兄弟を変えることよりも、自分自身と向き合うことを選びました。毎週のプチシェア会の時間では、自分では気づけなかった考え方や行動のクセを一緒に整理してもらい、「なぜ途中で止まってしまうのか。」ということを深く見つめる時間になりました。その中で、「まずは成果を追う前に、自分の土台を整えよう。」と決め、毎日み言を持って一日を歩むことを新しい習慣として始めました。",
+    turning: "毎日み言葉を意識して生活する中で、すぐに大きな成果が出たわけではありません。でも、不思議と以前よりも、「続けること」を大切にしたいと思えるようになりました。兄弟伝道だけではなく、自分の人生そのものを、最後までやり切れる人になりたいという思いが少しずつ強くなってきました。",
+    reflect: "私はこれまで、「成果を出すこと」がゴールになっていました。でも、本当に大切なのは、一つの成果ではなく、その後も愛し続け、歩み続けることだったのだと思います。兄弟との関わりを通して気づいたのは、変わるべきだったのは兄弟ではなく、自分自身だったということです。「途中で終わってしまう自分のパターン」に気づけたことが、今回一番大きな収穫でした。",
+    future: "これからも毎日の習慣を大切にしながら、自分の土台を少しずつ築いていきたいです。そして、「途中まで頑張る人」ではなく、「最後まで愛し、最後までやり切る人」を目指して、一歩ずつ歩み続けていきたいと思います。"
+  },
+  {
+    tag: "夫婦の応援",
+    profile: "30代女性",
+    title: "覚悟して送り出したら、不思議と不安が消えていた。",
+    before: "以前、夫が千葉の21修練会に参加する時、私は素直に応援することができませんでした。「みんなが行くから行くのかな。」「どうして今行かなければいけないんだろう。」そんな疑問が心の中にあり、夫が何を目指しているのかも、よく分かっていませんでした。仕事と育児で毎日余裕もなく、夫が教会関連の活動していても、「何をしているんだろう」と感じるばかりでした。",
+    then: "夫の行動は見ていましたが、夫の心を見ようとはしていませんでした。目的が分からないまま送り出していたので、応援する気持ちが持てず、不安や不満ばかりが膨らんでいました。夫が頑張っていても、どこか置いていかれているような気持ちでした。",
+    practice: "今回、新たに夫が清平の長期修練会に参加したいと相談があり、夫婦で「なぜ行くのか」「何のために挑戦するのか」を何度も話し合いました。その中で、自分の中に湧き上がる不安も「乗り越えるべき課題なんだ」と受け止め、「同じ感情が来た時、今度は逃げずに向き合おう」と覚悟を決めて夫を送り出しました。",
+    turning: "以前なら、夫が長期修練会に参加している間、不安やイライラで心が揺れていました。でも今回は、覚悟を決めて送り出したからか、不思議なくらい心が静かでした。夫から毎日電話で話を聞くのが楽しみになり、「今日はどうだった？」と自然に聞けている自分がいました。以前は不満でいっぱいだった時間が、夫の話を楽しみに待つ時間へと変わっていたのです。",
+    reflect: "夫を応援できなかった原因は、夫ではありませんでした。夫の動機を理解しようとせず、自分の感情を一人で抱え込んでいた。それだけでした。夫婦が同じ目的を持てた時、不安は消えたのではありません。不安に向き合う覚悟が生まれ、その覚悟が、夫を信じて応援する力へと変わっていきました。",
+    future: "これからも、夫が何を目指しているのかをよく話し合いながら歩んでいきたいです。そして、不安が来た時も一人で抱え込まず、夫婦で同じ方向を向いて乗り越えていける関係を築いていきたいと思います。"
+  },
+  {
+    tag: "夫婦の愛情表現",
+    profile: "30代男性",
+    title: "愛が、消えたのではなく、届け方を知らなかっただけ。",
+    before: "結婚して数年が経ち、子育てや家族の問題が重なる中で、私は正直、妻への愛が分からなくなっていました。周りからは「仲の良い夫婦ですね」と言われていましたが、実際は毎日を乗り切ることに精一杯でした。「もし子どもがいなかったら、どうなっていただろう。」そんなことまで考えてしまうほど、心は疲れていました。",
+    then: "私はずっと、「愛とは自然に湧いてくる気持ち」だと思っていました。だから、その気持ちが薄れてしまった自分を見て、「もう妻を愛せなくなってしまったのかもしれない。」そう思い込んでいたのです。",
+    practice: "そんな時にふと思い返して昔読んだ本を手に取りました。『愛を伝える5つの方法』という本でした。本には、人それぞれ「愛を感じる方法」が違うと書かれていました。妻と話してみると、妻が一番大切にしていたのは「クオリティタイム」。一緒に過ごす時間そのものが、愛情として伝わる人だったのです。それから私は、「愛しているつもり」ではなく、「妻に伝わる形で愛そう」と意識を変えました。",
+    turning: "その日から、妻との時間を以前より大切にするようになりました。すると、不思議なくらい毎日のギクシャクした時間が減っていったのです。「自分なりの愛」ではなく、「妻が愛を感じる形」で愛を届けることを意識し二人の時間を持つことで、妻も安心してくれていることを感じました。",
+    reflect: "私は、「愛がなくなった」のではありませんでした。相手が求めている形で、愛を届けられていなかっただけだったのです。そして、愛は感情だけでは続きません。相手をよく見て、相手が喜ぶ形を選び続けること。それが本当の愛なのだと学びました。",
+    future: "これからは、妻との「クオリティタイム」を意識してつくっていきたいです。そして妻だけでなく、子どもや家族、周りの人も、「どんな愛を求めているのだろう」と丁寧に見つめ、その人に伝わる形で愛を届けられる人になっていきたいと思います。神様が人を通して愛を届けてくださるように、私自身も誰かにとって、その愛を届ける存在になっていきたいです。"
+  }
+];
+
+const toc = document.getElementById('toc');
+
+stories.forEach((s, i) => {
+  const li = document.createElement('li');
+  li.className = 'story';
+
+  const bodyId = 'body-' + i;
+
+  li.innerHTML = `
+    <button class="story-head" aria-expanded="false" aria-controls="${bodyId}">
+      <span class="marker"></span>
+      <span class="head-text">
+        <span class="story-no">No. ${String(i + 1).padStart(4, '0')}</span>
+        <span class="tag">${s.tag}${s.profile ? `<span class="profile">(${s.profile})</span>` : ''}</span>
+        <span class="title">「${s.title}」</span>
+      </span>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <div class="story-body" id="${bodyId}">
+      <div class="story-inner">
+        <div class="section">
+          <div class="section-label">Before</div>
+          <p>${s.before}</p>
+        </div>
+        <div class="section">
+          <div class="section-label">あの頃の心の内</div>
+          <p>${s.then}</p>
+        </div>
+        <div class="section">
+          <div class="section-label">シンバPJでの実践</div>
+          <p>${s.practice}</p>
+        </div>
+        <div class="section turning">
+          <div class="section-label">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.6 5.2L19 9l-5.4 1.8L12 16l-1.6-5.2L5 9l5.4-1.8L12 2z"/></svg>
+            転機となった出来事
+          </div>
+          <p>${s.turning}</p>
+        </div>
+        <div class="section">
+          <div class="section-label">振り返って気づいたこと</div>
+          <p>${s.reflect}</p>
+        </div>
+        <div class="section future">
+          <div class="section-label">これから挑戦したいこと</div>
+          <p>${s.future}</p>
+        </div>
+        <button class="share-btn" type="button" data-index="${i}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 12v6a2 2 0 002 2h12a2 2 0 002-2v-6M16 6l-4-4-4 4M12 2v14" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="share-label">この物語のリンクをコピー</span>
+        </button>
+      </div>
+    </div>
+  `;
+
+  li.id = 'story-' + i;
+  toc.appendChild(li);
+
+  const head = li.querySelector('.story-head');
+  const body = li.querySelector('.story-body');
+
+  head.addEventListener('click', () => {
+    const isOpen = li.classList.contains('open');
+
+    document.querySelectorAll('li.story.open').forEach(other => {
+      if (other !== li){
+        other.classList.remove('open');
+        other.querySelector('.story-head').setAttribute('aria-expanded', 'false');
+        other.querySelector('.story-body').style.maxHeight = null;
+      }
+    });
+
+    if (isOpen){
+      li.classList.remove('open');
+      head.setAttribute('aria-expanded', 'false');
+      body.style.maxHeight = null;
+      history.replaceState(null, '', location.pathname + location.search);
+    } else {
+      li.classList.add('open');
+      head.setAttribute('aria-expanded', 'true');
+      body.style.maxHeight = body.scrollHeight + 'px';
+      history.replaceState(null, '', '#' + li.id);
+      setTimeout(() => { li.scrollIntoView({behavior: 'smooth', block: 'start'}); }, 120);
+    }
+  });
+
+  const shareBtn = li.querySelector('.share-btn');
+  shareBtn.addEventListener('click', async () => {
+    const url = location.origin + location.pathname + location.search + '#' + li.id;
+    const label = shareBtn.querySelector('.share-label');
+    const original = label.textContent;
+    try {
+      await navigator.clipboard.writeText(url);
+    } catch (e) {
+      const temp = document.createElement('textarea');
+      temp.value = url;
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand('copy');
+      document.body.removeChild(temp);
+    }
+    shareBtn.classList.add('copied');
+    label.textContent = 'コピーしました！';
+    setTimeout(() => {
+      shareBtn.classList.remove('copied');
+      label.textContent = original;
+    }, 1800);
+  });
+});
+
+// Auto-open a story if the page is loaded with a matching #story-N hash
+if (location.hash){
+  const target = document.querySelector(location.hash);
+  if (target && target.classList.contains('story')){
+    target.querySelector('.story-head').click();
+  }
+}
+</script>
+
+  <script>
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+    window.addEventListener('pageshow', function () {
+      window.scrollTo(0, 0);
+    });
+  </script>
+
+</body>
+</html>
